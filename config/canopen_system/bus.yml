@@ -1,0 +1,70 @@
+options:
+  dcf_path: "@BUS_CONFIG_PATH@"
+
+master:
+  node_id: 1
+  driver: "ros2_canopen::MasterDriver"
+  package: "canopen_master_driver"
+  baudrate: 1000
+  sync_period: 20000
+
+proxy_device_1:
+  node_id: 12
+  dcf: "roboteq_motor_controllers_v80.eds"
+  driver: "ros2_canopen::ProxyDriver"
+  package: "canopen_proxy_driver"
+  polling: true
+  diagnostics:
+    enable: true
+    period: 1000 # in milliseconds
+  reset_communication: false
+  tpdo:
+    1:
+      enabled: true
+      transmission: 0x01
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2100, sub_index: 1 } # read motor amps
+        - { index: 0x2101, sub_index: 1 } # read actual motor command
+    2:
+      enabled: true
+      transmission: 0x01
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2102, sub_index: 1 } # Read Applied Power Level
+        - { index: 0x2103, sub_index: 1 } # read encoder motor speed
+    3:
+      enabled: true
+      transmission: 0x01
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2104, sub_index: 1 } 
+        - { index: 0x2105, sub_index: 1 } 
+    4:
+      enabled: true
+      transmission: 0x01
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2106, sub_index: 1 } 
+        - { index: 0x2107, sub_index: 1 } 
+  rpdo: 
+    1:
+      enabled: true
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2000, sub_index: 1 } # set motor command
+        - { index: 0x2001, sub_index: 1 } # set position
+    2:
+      enabled: true
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2002, sub_index: 1 } # set velocity
+        - { index: 0x2003, sub_index: 1 } # set encoder count
+    3:
+      enabled: true
+      cob_id: "auto"
+      mapping:
+        - { index: 0x2006, sub_index: 1 } # set acceleration
+        - { index: 0x2007, sub_index: 1 } # set deceleration
+    4: 
+      enabled: false
